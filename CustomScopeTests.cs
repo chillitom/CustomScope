@@ -120,9 +120,9 @@ namespace CustomScope
         [Test]
         public void InjectedAndResolvedChildrenGetSameService()
         {
-            IResolutionRoot kernelScope = new CustomScope(_mainKernel);
+            IResolutionRoot customScope = new CustomScope(_mainKernel);
 
-            var a = kernelScope.Get<ComplexClass>();
+            var a = customScope.Get<ComplexClass>();
 
             Assert.That(a.InjectedServiceUser.Service,
                 Is.SameAs(a.ResolvedServiceUser.Service));
@@ -136,9 +136,9 @@ namespace CustomScope
             Assert.That(a.InjectedServiceUser.Service,
                 Is.SameAs(a.ResolvedServiceUser.Service));
             
-            IResolutionRoot kernelScope = new CustomScope(_mainKernel);
+            IResolutionRoot customScope = new CustomScope(_mainKernel);
 
-            var b = kernelScope.Get<ComplexClass>();
+            var b = customScope.Get<ComplexClass>();
 
             Assert.That(b.InjectedServiceUser.Service,
                 Is.SameAs(b.ResolvedServiceUser.Service));
