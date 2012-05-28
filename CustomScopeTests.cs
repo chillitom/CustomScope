@@ -149,5 +149,27 @@ namespace CustomScope
             Assert.That(a.InjectedServiceUser.Service,
                 Is.Not.SameAs(b.InjectedServiceUser.Service));
         }
+
+        [Test]
+        public void CustomScopeObjectsGetGarbageCollectedWhenCustomScopeGetsGarbageCollected()
+        {
+            CustomScope customScope = new CustomScope(_mainKernel);
+
+            var weakRef = new WeakReference(customScope.Get<IService>());
+
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+            
+            Assert.That(weakRef.IsAlive, Is.True);
+
+            customScope = null;
+
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+
+            Thread.Sleep(100); // required to let Ninject's cache pruning thread run.
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
+
+            Assert.That(customScope, Is.Null);
+            Assert.That(weakRef.IsAlive, Is.False);
+        }
     }
 }
