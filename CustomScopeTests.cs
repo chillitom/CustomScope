@@ -38,7 +38,8 @@ namespace CustomScope
         [SetUp]
         public void SetUp()
         {
-            _mainKernel = new StandardKernel();
+            var settings = new NinjectSettings {CachePruningInterval = TimeSpan.FromMilliseconds(50)};
+            _mainKernel = new StandardKernel(settings);
             _mainKernel.Bind<IService>().To<Service>().InCustomScope();
             _mainKernel.Bind<IResolutionRoot>().ToMethod(CustomScope.ResolutionRootFromRequest);
         }
