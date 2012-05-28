@@ -12,12 +12,13 @@ namespace CustomScope
     {
         private class ScopeParameter : Parameter
         {
-            public IResolutionRoot Scope { get; private set; }
+            private readonly WeakReference _scope;
+            public IResolutionRoot Scope { get { return _scope.Target as IResolutionRoot; } }
 
             public ScopeParameter(IResolutionRoot scope) 
-                : base("£$%^", (c,t) => null, true)
+                : base("Â£$%^", (c,t) => null, true)
             {
-                Scope = scope;
+                _scope = new WeakReference(scope);
             }
         }
 
